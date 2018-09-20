@@ -1,0 +1,24 @@
+﻿<Window x:Class="MainApp.Views.LoginView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MainApp.Views" WindowStartupLocation="CenterScreen"
+        mc:Ignorable="d"
+        Title="LoginView" Height="300" Width="300">
+    <Grid Margin="10">
+        <Border Padding="20">
+            <StackPanel >
+                <Label Content="User Name"/>
+                <TextBox Text="{Binding User}"/>
+                <Label Margin="0,10,0,0" Content="Password"/>
+                <PasswordBox Height="35" PasswordChanged="PasswordBox_PasswordChanged" />
+                <WrapPanel Margin="0,20" HorizontalAlignment="Right">
+                    <Button Content="Login" Command="{Binding LoginCommand}"></Button>
+                    <Button Content="Keluar" Click="Button_Click"></Button>
+                </WrapPanel>
+                
+            </StackPanel>
+        </Border>
+    </Grid>
+</Window>

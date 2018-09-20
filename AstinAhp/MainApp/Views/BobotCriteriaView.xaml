@@ -1,0 +1,47 @@
+﻿<Window x:Class="MainApp.Views.BobotCriteriaView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MainApp.Views"
+        mc:Ignorable="d" WindowStartupLocation="CenterScreen"
+        Title="BobotCriteriaView" Height="400" Width="550">
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="0"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="97*"/>
+                <ColumnDefinition Width="0"/>
+            </Grid.ColumnDefinitions>
+            <DockPanel>
+                <Label DockPanel.Dock="Top" Content="Data"/>
+                <StackPanel DockPanel.Dock="Bottom" VerticalAlignment="Stretch" x:Name="main" ></StackPanel>
+            </DockPanel>
+            <DockPanel Grid.Column="1" >
+                <Label Content="Normalisasi" DockPanel.Dock="Top"/>
+                <StackPanel ></StackPanel>
+            </DockPanel>
+            <DockPanel Grid.Row="1" Grid.Column="0" >
+                <Label Content="Normalisasi" DockPanel.Dock="Top"/>
+                <StackPanel ></StackPanel>
+            </DockPanel>
+            <DockPanel Grid.Row="1" Grid.Column="1" >
+                <Label Content="Normalisasi" DockPanel.Dock="Top"/>
+                <StackPanel ></StackPanel>
+            </DockPanel>
+
+
+        </Grid>
+        <WrapPanel Grid.Row="1" HorizontalAlignment="Right">
+            <Button Click="Button_Click" Content="Proccess" />
+            <Button Click="Button_Click_1" Content="Keluar" />
+        </WrapPanel>
+    </Grid>
+</Window>

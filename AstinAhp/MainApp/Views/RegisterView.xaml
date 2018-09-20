@@ -1,0 +1,31 @@
+﻿<Window x:Class="MainApp.Views.RegisterView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MainApp.Views"
+        mc:Ignorable="d" WindowStartupLocation="CenterScreen"
+        Title="RegisterView" Height="405.581" Width="305.59">
+    <Grid Margin="10">
+        <Border Padding="20">
+            <StackPanel >
+                <Label Content="User Name"/>
+                <TextBox Text="{Binding User}" />
+                <Label Margin="0,10,0,0" Content="Password"/>
+                <PasswordBox Name="password" PasswordChanged="password_PasswordChanged" Height="35" />
+                <Label Margin="0,10,0,0" Content="Confirm Password"/>
+                <PasswordBox Name="confirm" Height="35" PasswordChanged="confirm_PasswordChanged" />
+                <WrapPanel Margin="0,20" HorizontalAlignment="Right">
+                    <Button Content="Register" Command="{Binding RegisterCommand}"></Button>
+                    <Button Content="Keluar" Click="Button_Click"></Button>
+                </WrapPanel>
+                <WrapPanel  VerticalAlignment="Bottom">
+                    <TextBlock  Text="Punya Account? "/>
+                    <TextBlock Foreground="OrangeRed" Text="Login Disini" x:Name="loginInfo" MouseDown="loginInfo_MouseDown"/>
+                </WrapPanel>
+               
+            </StackPanel>
+            
+        </Border>
+    </Grid>
+</Window>
