@@ -1,0 +1,22 @@
+﻿<Window x:Class="MainApp.Views.PemohonDataView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MainApp.Views"
+        mc:Ignorable="d" WindowStartupLocation="CenterScreen"  Style="{StaticResource childWindowStyle}"
+        Title="DATA KRITERIA PEMOHON" Height="450" Width="750">
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+       
+        <DataGrid CanUserAddRows="False" CanUserDeleteRows="False"  AutoGenerateColumns="False" x:Name="main" Grid.Row="1"></DataGrid>
+        <WrapPanel Margin="0,10" HorizontalAlignment="Right" Grid.Row="2">
+            <Button  Content="Simpan" Click="Button_Click"/>
+            <Button  Content="Keluar" Click="Button_Click_1"/>
+        </WrapPanel>
+    </Grid>
+</Window>

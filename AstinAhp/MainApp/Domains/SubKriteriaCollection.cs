@@ -88,7 +88,7 @@ namespace MainApp.Domains
                 {
                     using (var db = new OcphDbContext())
                     {
-                        if (db.Kriterias.Delete(O => O.Id == item.Id))
+                        if (db.SubKriterias.Delete(O => O.Id == item.Id))
                         {
                             list.Remove(item);
                             return true;

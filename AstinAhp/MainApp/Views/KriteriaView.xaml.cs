@@ -44,7 +44,7 @@ namespace MainApp.Views
         public CommandHandler NewCommand { get; }
         public CommandHandler SaveCommand { get; }
         public KriteriaCollection Source { get; }
-
+        public CommandHandler DeleteCommand { get; }
         public KriteriaViewModel()
         {
             Source = Helper.GetMainViewModel().Kriterias;
@@ -53,7 +53,28 @@ namespace MainApp.Views
             //Command
             NewCommand = new CommandHandler { CanExecuteAction = x => true, ExecuteAction = NewCommandAction };
             SaveCommand = new CommandHandler { CanExecuteAction = SaveCommandValidate, ExecuteAction = SaveCommandAction };
+            DeleteCommand = new CommandHandler { CanExecuteAction = x => Source.SelectedItem != null, ExecuteAction = DeleteCommandAction };
+            Source.SelectedItem = null;
+        }
+        private void DeleteCommandAction(object obj)
+        {
+            try
+            {
+                if (Source.Remove(Source.SelectedItem))
+                {
+                    Helper.Info("Data Berhasil Dihapus");
+                    SourceView.Refresh();
+                }
+                else
+                {
+                    throw new SystemException("Data Tidak Berhasil Dihapus");
+                }
+            }
+            catch (Exception ex)
+            {
 
+                Helper.Error(ex.Message);
+            }
         }
 
         private void Source_OnSelected(object param)

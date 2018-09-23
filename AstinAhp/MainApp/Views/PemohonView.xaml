@@ -3,20 +3,20 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:MainApp.Views"
+        xmlns:local="clr-namespace:MainApp.Views"  Style="{StaticResource childWindowStyle}"
         mc:Ignorable="d" WindowStartupLocation="CenterScreen"
         Title="Pemohon" Height="550" Width="500">
     <Grid Margin="20">
         <Grid.RowDefinitions>
-            <RowDefinition Height="144*"/>
-            <RowDefinition Height="270*"/>
-            <RowDefinition Height="65*"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
         <Border Margin="5" BorderThickness="1" CornerRadius="5" BorderBrush="#FFC3BFBF">
             <StackPanel>
                 <WrapPanel Margin="2">
-                    <Label Width="100" Content="Nama"/>
-                    <TextBox Width="200" Text="{Binding Nama}"/>
+                    <Label  Width="100" Content="Nama"/>
+                    <TextBox Style="{StaticResource Input}" Width="200" Text="{Binding Nama}"/>
                 </WrapPanel>
                 <WrapPanel Margin="2">
                     <Label Width="100" Content="Jenis Kelamin"/>
@@ -27,7 +27,7 @@
                 </WrapPanel>
                 <WrapPanel Margin="2">
                     <Label Width="100" Content="Jenis Kelamin"/>
-                    <TextBox AcceptsReturn="True" Height="45" Width="200" Text="{Binding Alamat}"/>
+                    <TextBox Style="{StaticResource Input}" VerticalContentAlignment="Top" AcceptsReturn="True" Height="45" Width="200" Text="{Binding Alamat}"/>
                 </WrapPanel>
             </StackPanel>
         </Border>
@@ -42,6 +42,7 @@
         <WrapPanel Margin="10" Grid.Row="2" HorizontalAlignment="Right">
             <Button Content="Baru" Command="{Binding NewCommand}"></Button>
             <Button  Content="Simpan" Command="{Binding SaveCommand}"></Button>
+            <Button  Content="Hapus" Command="{Binding DeleteCommand}"></Button>
             <Button  Content="Keluar" Click="Button_Click"></Button>
         </WrapPanel>
 

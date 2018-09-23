@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:MainApp.Views"
+        xmlns:local="clr-namespace:MainApp.Views"  Style="{StaticResource childWindowStyle}"
         mc:Ignorable="d" WindowStartupLocation="CenterScreen"
         Title="RegisterView" Height="405.581" Width="305.59">
     <Grid Margin="10">

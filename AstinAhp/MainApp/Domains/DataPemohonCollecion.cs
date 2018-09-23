@@ -83,7 +83,7 @@ namespace MainApp.Domains
                 return false;
             }
             catch
-            {
+            {   
                 return false;
             }
         }
@@ -97,21 +97,36 @@ namespace MainApp.Domains
 
         public bool Update(datapemohon t)
         {
-            if (SelectedItem != null)
+            using (var db = new OcphDbContext())
             {
-                using (var db = new OcphDbContext())
+                var trans = db.BeginTransaction();
+                try
                 {
-                    try
+                    foreach (var item in list)
                     {
-                        return db.DataPemohons.Update(O => new { O.Nilai }, SelectedItem, O => O.Id == t.Id );
+                        if (item.Id > 0)
+                        {
+                            if (!db.DataPemohons.Update(O => new { O.Nilai, O.Value }, item, O => O.Id == item.Id))
+                                throw new SystemException("Data Tidak Tersimpan");
+                        }
+                        else
+                        {
+                            item.Id = db.DataPemohons.InsertAndGetLastID(item);
+                            if (item.Id <= 0)
+                                throw new SystemException("Data Tidak Tersimpan");
+
+                        }
+
                     }
-                    catch
-                    {
-                        return false;
-                    }
+                    trans.Commit();
+                    return true;
+                }
+                catch (SystemException ex)
+                {
+                    trans.Rollback();
+                    throw new SystemException(ex.Message);
                 }
             }
-            return false;
         }
 
         IEnumerator IEnumerable.GetEnumerator()

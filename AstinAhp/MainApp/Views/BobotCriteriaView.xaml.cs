@@ -1,20 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+using AHPLib;
 using AHPLib.Models;
 using MainApp.Domains;
+using MainApp.Models;
 
 namespace MainApp.Views
 {
@@ -36,22 +29,22 @@ namespace MainApp.Views
         {
             int width = 75;
             var headers = new WrapPanel();
-            headers.Children.Add(new Label() {Width= width });
+            headers.Children.Add(new TextBox() {Width= width });
           foreach(var item in Criterias)
             {
-                headers.Children.Add(new Label() {Width= width, Content= item.Nama });
+                headers.Children.Add(new TextBox() {Width= width, Text= item.Nama });
             }
 
             main.Children.Add(headers);
             foreach (var item in Criterias)
             {
                 var rows = new WrapPanel();
-                rows.Children.Add(new Label { Width= width, Content = item.Nama });
+                rows.Children.Add(new TextBox { Width= width, Text= item.Nama });
                 foreach (var item1 in Criterias)
                 {
 
                     var dbData = KriteriaData.Where(O => O.KriteriaId == item.Id && O.PasanganId == item1.Id).FirstOrDefault();
-                    var data = new BobotItem() { Width = width, Row = item.Id, Column = item1.Id };
+                    var data = new BobotItem() { RowId=item.Id, Width = width, Row = item.Id, Column = item1.Id };
                     if (dbData!=null)
                     {
                         data.Nilai = dbData.Nilai;
@@ -82,17 +75,18 @@ namespace MainApp.Views
 
         public KriteriaDataCollection KriteriaData { get; }
         public KriteriaCollection Criterias { get; }
+        public BaseProject Project { get; private set; }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                var project = new AHPLib.BaseProject();
+                Project = new AHPLib.BaseProject();
                 var bobots = new List<MBobot>();
                 foreach (var item in Criterias)
                 {
                     var k = new MCriteria(item.Id, item.Kode, item.Nama);
-                    project.AddSubCriteria(k);
+                    Project.AddSubCriteria(k);
                     foreach (WrapPanel wrp in main.Children)
                     {
                         var results = wrp.Children.OfType<BobotItem>().Where(O => O.Row == item.Id);
@@ -117,7 +111,7 @@ namespace MainApp.Views
 
                 if ( KriteriaData.Update(new Models.DTO.ahpkriteria()))
                 {
-                    project.SetBobot(bobots);
+                    Project.SetBobot(bobots);
                 }
             }
             catch (Exception ex)
@@ -127,8 +121,126 @@ namespace MainApp.Views
             }
 
 
+            Project.Calculate(0);
 
+            SetTableNormalisasi(Project);
+            SetTableKonsistency(Project);
+            SetTableKonsistencyMatrix(Project);
+            ci.Text = Project.ConsistencyIndex.ToString();
+            cr.Text = Project.ConsistencyRatio.ToString();
 
+        }
+
+        private void SetTableKonsistencyMatrix(BaseProject project)
+        {
+            int width = 75;
+            var headers = new WrapPanel();
+            headers.Children.Add(new TextBox() { Width = width });
+            headers.Children.Add(new TextBox() { Width = width, Text = "Jumlah" });
+            headers.Children.Add(new TextBox() { Width = width, Text = "Prioritas" });
+            headers.Children.Add(new TextBox() { Width = width, Text = "Hasil" });
+
+            matrix.Children.Add(headers);
+            int i = 0;
+            foreach (var item in Criterias)
+            {
+                var rows = new WrapPanel();
+                rows.Children.Add(new TextBox { Width = width, Text = item.Nama });
+                var prio1 = new BobotItem() { Width = width, Nilai = Project.SumOfConsistensyTable[i] };
+                var prio2 = new BobotItem() { Width = width, Nilai = Project.PriorityVector[i] };
+                var prio3 = new BobotItem() { Width = width, Nilai = Project.Lamdas[i] };
+
+                SetBindingData(prio1);
+                rows.Children.Add(prio1);
+                SetBindingData(prio2);
+                rows.Children.Add(prio2);
+                SetBindingData(prio3);
+                rows.Children.Add(prio3);
+
+                i++;
+                matrix.Children.Add(rows);
+            }
+        }
+
+        private void SetTableKonsistency(BaseProject project)
+        {
+            int width = 75;
+            var headers = new WrapPanel();
+            headers.Children.Add(new TextBox() { Width = width });
+            foreach (var item in Criterias)
+            {
+                headers.Children.Add(new TextBox() { Width = width, Text = item.Nama });
+            }
+            headers.Children.Add(new TextBox() { Width = width, Text = "Jumlah" });
+
+            tblConsistency.Children.Add(headers);
+            int i = 0;
+            foreach (var item in Criterias)
+            {
+                var rows = new WrapPanel();
+                rows.Children.Add(new TextBox { Width = width, Text = item.Nama });
+                for (int j = 0; j < Criterias.Count; j++)
+                {
+                    var data = new BobotItem() { Width = width, Row = i, Column = j };
+                    data.Nilai = project.KonsistensiTable[i, j];
+                    SetBindingData(data);
+
+                    rows.Children.Add(data);
+                }
+                var prio = new BobotItem() { Width = width, Nilai = Project.SumOfConsistensyTable[i] };
+                SetBindingData(prio);
+                rows.Children.Add(prio);
+
+                i++;
+                tblConsistency.Children.Add(rows);
+            }
+        }
+
+        private void SetTableNormalisasi(BaseProject project)
+        {
+            int width = 75;
+            var headers = new WrapPanel();
+            headers.Children.Add(new TextBox() { Width = width });
+            foreach (var item in Criterias)
+            {
+                headers.Children.Add(new TextBox() { Width = width, Text = item.Nama });
+            }
+            headers.Children.Add(new TextBox() { Width = width, Text = "Priority" });
+
+            normalisasi.Children.Add(headers);
+            int i = 0;
+            foreach (var item in Criterias)
+            {
+                var rows = new WrapPanel();
+                rows.Children.Add(new TextBox { Width = width, Text = item.Nama });
+                for (int j = 0; j < Criterias.Count; j++)
+                {
+                    var data = new BobotItem() { Width = width, Row = i, Column = j };
+                    data.Nilai =project.TableNormalisasi[i, j];
+                    SetBindingData(data);
+
+                    rows.Children.Add(data);
+                }
+                var prio = new BobotItem() { Width = width, Nilai=Project.PriorityVector[i] };
+                SetBindingData(prio);
+                rows.Children.Add(prio);
+
+                i++;
+                normalisasi.Children.Add(rows);
+            }
+
+        }
+
+        private void SetBindingData(BobotItem data)
+        {
+            Binding binding = new Binding();
+            binding.Path = new PropertyPath("Nilai");
+            binding.Mode = BindingMode.TwoWay;
+            binding.StringFormat = "N4";
+            binding.UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged;
+            binding.Source = data;  // view model?
+
+            BindingOperations.SetBinding(data, TextBox.TextProperty, binding);
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
@@ -138,48 +250,5 @@ namespace MainApp.Views
     }
 
 
-    public class BobotItem:TextBox,INotifyPropertyChanged
-    {
-        private double nilai;
-
-        public int Row { get; set; }
-        public int Column { get; set; }
-        public double Nilai {
-            get { return nilai; }
-            set
-            {
-                SetProperty(ref nilai, value);
-            }
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        public bool SetProperty<T>(ref T backingStore, T value,
-        [CallerMemberName]string propertyName = "", Action onChanged = null)
-        {
-            if (EqualityComparer<T>.Default.Equals(backingStore, value))
-                return false;
-
-            backingStore = value;
-            onChanged?.Invoke();
-            OnPropertyChanged(propertyName);
-            return true;
-        }
-
-
-        #region INotifyPropertyChanged
-
-
-
-        public void OnPropertyChanged([CallerMemberName] string propertyName = "")
-        {
-            var changed = PropertyChanged;
-            if (changed == null)
-                return;
-            changed.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-        #endregion
-
-
-    }
+   
 }

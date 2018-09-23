@@ -4,13 +4,13 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MainApp.Views" WindowStartupLocation="CenterScreen"
-        mc:Ignorable="d"
-        Title="LoginView" Height="300" Width="300">
+        mc:Ignorable="d"  Style="{StaticResource childWindowStyle}"
+        Title="Login" Height="350" Width="300">
     <Grid Margin="10">
-        <Border Padding="20">
-            <StackPanel >
+        <Border BorderThickness="1" BorderBrush="Gray" CornerRadius="5" Padding="20">
+            <StackPanel VerticalAlignment="Bottom" >
                 <Label Content="User Name"/>
-                <TextBox Text="{Binding User}"/>
+                <TextBox Style="{StaticResource Input}" Text="{Binding User}"/>
                 <Label Margin="0,10,0,0" Content="Password"/>
                 <PasswordBox Height="35" PasswordChanged="PasswordBox_PasswordChanged" />
                 <WrapPanel Margin="0,20" HorizontalAlignment="Right">

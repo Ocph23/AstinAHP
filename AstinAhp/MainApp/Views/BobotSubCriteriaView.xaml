@@ -4,22 +4,80 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MainApp.Views"
-        mc:Ignorable="d"
-        Title="BobotSubCriteriaView" Height="450" Width="800">
+         Style="{StaticResource childWindowStyle}"
+        mc:Ignorable="d"  WindowStartupLocation="CenterScreen"
+        Title="BOBOT SUB KRITERIA" Height="600" Width="1000">
+   
+
     <Grid Margin="20">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
-        <WrapPanel>
-            <Label Content="Kriteria" Width="81"></Label>
-            <ComboBox ItemsSource="{Binding Kriterias}" Width="134" DisplayMemberPath="Nama" SelectedItem="{Binding Kriterias.SelectedItem}"/>
-        </WrapPanel>
-        <StackPanel Margin="10" x:Name="main" Grid.Row="1"></StackPanel>
-        <WrapPanel Grid.Row="2" HorizontalAlignment="Right">
-            <Button Click="Button_Click" Content="Proccess" />
-            <Button Click="Button_Click_1" Content="Keluar" />
-        </WrapPanel>
+        <Border Padding="5" BorderThickness="1" BorderBrush="Gray" CornerRadius="5">
+            <StackPanel>
+                <WrapPanel>
+                    <Label Content="Kriteria" Width="120"></Label>
+                    <ComboBox ItemsSource="{Binding Kriterias}" Width="134" DisplayMemberPath="Nama" SelectedItem="{Binding Kriterias.SelectedItem}"/>
+                </WrapPanel>
+                <StackPanel >
+                    <WrapPanel>
+                        <Label Width="120" Content="Nilai Priority Vector"/>
+                        <Label  Name="pv"/>
+                    </WrapPanel>
+
+                </StackPanel>
+            </StackPanel>
+        </Border>
+        <Border Padding="5" BorderThickness="1" BorderBrush="Gray" CornerRadius="5" Grid.Row="1">
+            <Grid >
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="43*"/>
+                    <ColumnDefinition Width="57*"/>
+                </Grid.ColumnDefinitions>
+                <DockPanel>
+                    <Label DockPanel.Dock="Top" Content="BOBOT"/>
+                    <StackPanel Width="auto" DockPanel.Dock="Bottom" VerticalAlignment="Stretch" x:Name="main" ></StackPanel>
+                </DockPanel>
+                <DockPanel Grid.Column="1" >
+                    <Label Content="Normalisasi" DockPanel.Dock="Top"/>
+                    <StackPanel Name="normalisasi" ></StackPanel>
+                </DockPanel>
+                <DockPanel Grid.Row="1" Grid.Column="1" >
+                    <Label Content="TABLE KONSISTENSI" DockPanel.Dock="Top"/>
+                    <StackPanel Name="tblConsistency" ></StackPanel>
+                </DockPanel>
+                <DockPanel Grid.Row="1" Grid.Column="0" >
+                    <Label Content="KONSISTENSI MATRIX" DockPanel.Dock="Top"/>
+                    <StackPanel Name="matrix" ></StackPanel>
+                </DockPanel>
+
+
+            </Grid>
+        </Border>
+        <Border Grid.Row="2" Padding="5" BorderThickness="1" BorderBrush="Gray" CornerRadius="5">
+            <DockPanel  >
+                <StackPanel>
+                    <WrapPanel >
+                        <Label Content="Concsistency Index " Width="120" Height="25"/>
+                        <TextBox Name="ci" Height="25"/>
+                    </WrapPanel>
+                    <WrapPanel >
+                        <Label Content="Concsistency Ratio " Width="120" Height="25"/>
+                        <TextBox Name="cr" Height="25"/>
+                    </WrapPanel>
+                </StackPanel>
+                <WrapPanel HorizontalAlignment="Right">
+                    <Button Click="Button_Click" Content="Proccess" />
+                    <Button Click="Button_Click_1" Content="Keluar" />
+                </WrapPanel>
+            </DockPanel>
+        </Border>
+      
     </Grid>
 </Window>

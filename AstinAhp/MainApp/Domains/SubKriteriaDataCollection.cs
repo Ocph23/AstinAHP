@@ -14,9 +14,9 @@ namespace MainApp.Domains
         private List<ahpsub> datas;
         private ahpsub _selected;
         public event delOnSelected OnSelected;
-        public SubKriteriaDataCollection(kriteria kriteria)
+        public SubKriteriaDataCollection(int kriteriaId)
         {
-            Kriteria = kriteria;
+            KriteriaId = kriteriaId;
             if (datas == null)
                 datas = GetDatas();
         }
@@ -25,7 +25,7 @@ namespace MainApp.Domains
         {
             using (var db = new OcphDbContext())
             {
-                var result = from a in db.SubKriterias.Where(O => O.KriteriaId == Kriteria.Id)
+                var result = from a in db.SubKriterias.Where(O => O.KriteriaId == KriteriaId)
                              join b in db.AHPSubKriterias.Select() on a.Id equals b.SubKriteriaId
                              select b;
                 return result.ToList();
@@ -46,7 +46,7 @@ namespace MainApp.Domains
 
         public bool IsReadOnly => false;
 
-        public kriteria Kriteria { get; }
+        public int KriteriaId { get; }
 
         public void Add(ahpsub item)
         {

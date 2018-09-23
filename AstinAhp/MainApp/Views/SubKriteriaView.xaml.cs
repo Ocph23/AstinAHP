@@ -38,6 +38,9 @@ namespace MainApp.Views
     {
         public CommandHandler NewCommand { get; }
         public CommandHandler SaveCommand { get; }
+        public CommandHandler DeleteCommand { get; }
+        public CollectionView SourceView { get; }
+        public List<subkriteria> DataSource { get; }
         public KriteriaCollection Source { get; }
 
         public SubKriteriaViewModel()
@@ -48,10 +51,46 @@ namespace MainApp.Views
             {
                 item.SubKriterias.OnSelected += SubKriterias_OnSelected;
             }
+            DataSource = new List<subkriteria>();
             NewCommand = new CommandHandler { CanExecuteAction = NewCommandValidation, ExecuteAction = NewCommandAction };
             SaveCommand = new CommandHandler { CanExecuteAction = SaveCommandValidate, ExecuteAction = SaveCommandAction };
+            DeleteCommand = new CommandHandler { CanExecuteAction = DeleteCommandValidation, ExecuteAction = DeleteCommandAction };
+            SourceView = (CollectionView)CollectionViewSource.GetDefaultView(DataSource);
         }
 
+        private bool DeleteCommandValidation(object obj)
+        {
+            if (Source.SelectedItem != null && Source.SelectedItem.SubKriterias.SelectedItem != null)
+                return true;
+            else
+                return false;
+        }
+
+        private void DeleteCommandAction(object obj)
+        {
+            try
+            {
+                if (Source.SelectedItem!=null && Source.SelectedItem.SubKriterias!=null 
+                    && Source.SelectedItem.SubKriterias.Remove(Source.SelectedItem.SubKriterias.SelectedItem))
+                {
+                    Helper.Info("Data Berhasil Dihapus");
+                    var data = DataSource.Where(O => O.Id == Source.SelectedItem.SubKriterias.SelectedItem.Id).FirstOrDefault();
+                    if (data != null)
+                        DataSource.Remove(data);
+                    SourceView.Refresh();
+                }
+                else
+                {
+                    throw new SystemException("Data Tidak Berhasil Dihapus");
+                }
+            }
+            catch (Exception ex)
+            {
+
+                Helper.Error(ex.Message);
+            }
+            SourceView.Refresh();
+        }
         private bool NewCommandValidation(object obj)
         {
             if (Source.SelectedItem != null && Source.SelectedItem.SubKriterias.SelectedItem != null)
@@ -64,10 +103,15 @@ namespace MainApp.Views
         {
             var item = param as kriteria;
             
-           if(item!=null)
+           if(item!=null && item.SubKriterias!=null)
             {
-                item.SubKriterias.SelectedItem = null;
+                DataSource.Clear();
+                foreach(var data in item.SubKriterias)
+                {
+                    DataSource.Add(data);
+                }
             }
+            SourceView.Refresh();
             CleanForm();
 
         }
@@ -128,6 +172,7 @@ namespace MainApp.Views
             {
                 Helper.Error("Gagal Disimpan");
             }
+            SourceView.Refresh();
         }
 
 

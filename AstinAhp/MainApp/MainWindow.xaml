@@ -3,21 +3,24 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:MainApp"
-        mc:Ignorable="d" WindowState="Maximized"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
-        <Menu VerticalAlignment="Top" >
-            <MenuItem Header="File" >
-                <MenuItem Header="Pemohon" Click="MenuItem_Click"/>
-                <MenuItem Header="Kriteria" Name="kriteriaMenu" Click="kriteriaMenu_Click"/>
-                <MenuItem Header="Sub Kriteria" Name="submn" Click="submn_Click"/>
-                <MenuItem Header="Keluar"/>
+        xmlns:local="clr-namespace:MainApp" 
+        mc:Ignorable="d" WindowState="Maximized" Style="{StaticResource  childWindowStyle}"
+        Title="AHP" Height="417.333" Width="473.333">
+    <Grid >
+        <Menu VerticalAlignment="Top" VerticalContentAlignment="Center" Height="34" Background="#FFD4D6D8" BorderThickness="0.6" BorderBrush="#3c5f78" >
+            <MenuItem VerticalAlignment="Center" Header="File" Height="31" >
+                <MenuItem Header="Data Pemohon" Click="MenuItem_Click"/>
+                <MenuItem Header="Data Kriteria" Name="kriteriaMenu" Click="kriteriaMenu_Click"/>
+                <MenuItem Header="Data Sub Kriteria" Name="submn" Click="submn_Click"/>
             </MenuItem>
-            <MenuItem Header="AHP DATA"  >
-                <MenuItem Header="Nilai Kriteria" Click="MenuItem_Click_1"/>
-                <MenuItem Header="Nilai Sub Kriteria" Click="MenuItem_Click_2"/>
+            <MenuItem Header="Proses AHP"  >
+                <MenuItem Header="AHP Kriteria" Click="MenuItem_Click_1"/>
+                <MenuItem Header="AHP Sub Kriteria" Click="MenuItem_Click_2"/>
+
             </MenuItem>
+            <MenuItem Header="Nilai Pemohon" Click="MenuItem_Click_3"/>
+            <MenuItem Header="Laporan" Name="report" Click="report_Click"/>
+            <MenuItem Name="keluar" Click="keluar_Click" Header="Keluar" />
         </Menu>
 
     </Grid>

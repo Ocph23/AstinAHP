@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:MainApp.Views"
+        xmlns:local="clr-namespace:MainApp.Views" Style="{StaticResource childWindowStyle}"
         mc:Ignorable="d" WindowStartupLocation="CenterScreen"
         Title="KriteriaView" Height="500" Width="500">
     <Grid Margin="20">
@@ -16,11 +16,11 @@
             <StackPanel>
                 <WrapPanel Margin="2">
                     <Label Width="100" Content="Kode"/>
-                    <TextBox Width="200" Text="{Binding Kode}"/>
+                    <TextBox Style="{StaticResource Input}" Width="200" Text="{Binding Kode}"/>
                 </WrapPanel>
                 <WrapPanel Margin="2">
                     <Label Width="100" Content="Kriteria"/>
-                    <TextBox Width="200" Text="{Binding Nama}"/>
+                    <TextBox Style="{StaticResource Input}" Width="200" Text="{Binding Nama}"/>
                 </WrapPanel>
             </StackPanel>
         </Border>
@@ -34,6 +34,7 @@
         <WrapPanel Margin="5,10" Grid.Row="2" HorizontalAlignment="Right">
             <Button Content="Baru" Command="{Binding NewCommand}"></Button>
             <Button  Content="Simpan" Command="{Binding SaveCommand}"></Button>
+            <Button  Content="Hapus" Command="{Binding DeleteCommand}"></Button>
             <Button  Content="Keluar" Click="Button_Click"></Button>
         </WrapPanel>
 

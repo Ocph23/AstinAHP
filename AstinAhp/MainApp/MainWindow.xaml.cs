@@ -55,5 +55,22 @@ namespace MainApp
             var form = new Views.BobotSubCriteriaView();
             form.ShowDialog();
         }
+
+        private void MenuItem_Click_3(object sender, RoutedEventArgs e)
+        {
+            var form = new Views.PemohonDataView();
+            form.ShowDialog();
+        }
+
+        private void keluar_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
+
+        private void report_Click(object sender, RoutedEventArgs e)
+        {
+            var form = new Views.LaporanView();
+            form.ShowDialog();
+        }
     }
 }

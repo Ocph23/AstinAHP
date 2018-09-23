@@ -6,56 +6,72 @@ using System.Threading.Tasks;
 using Ocph.DAL;
  
  namespace MainApp.Models.DTO  
-{ 
-     [TableName("datapemohon")] 
-     public class datapemohon :BaseNotify
-   {
-          [PrimaryKey("Id")] 
-          [DbColumn("Id")] 
-          public int Id 
-          { 
-               get{return _id;} 
-               set{ 
+{
+    [TableName("datapemohon")]
+    public class datapemohon : BaseNotify
+    {
+        [PrimaryKey("Id")]
+        [DbColumn("Id")]
+        public int Id
+        {
+            get { return _id; }
+            set
+            {
 
-                    SetProperty(ref _id, value);
-                     }
-          } 
+                SetProperty(ref _id, value);
+            }
+        }
 
-          [DbColumn("Nilai")] 
-          public double Nilai 
-          { 
-               get{return _nilai;} 
-               set{ 
+        [DbColumn("Nilai")]
+        public double Nilai
+        {
+            get { return _nilai; }
+            set
+            {
 
-                    SetProperty(ref _nilai, value);
-                     }
-          } 
+                SetProperty(ref _nilai, value);
+            }
+        }
 
-          [DbColumn("PemohonId")] 
-          public int PemohonId 
-          { 
-               get{return _pemohonid;} 
-               set{ 
+        [DbColumn("Value")]
+        public string Value
+        {
+            get { return _value; }
+            set
+            {
 
-                    SetProperty(ref _pemohonid, value);
-                     }
-          } 
+                SetProperty(ref _value, value);
+            }
+        }
 
-          [DbColumn("KriteriaId")] 
-          public int KriteriaId 
-          { 
-               get{return _kriteriaid;} 
-               set{ 
+        [DbColumn("PemohonId")]
+        public int PemohonId
+        {
+            get { return _pemohonid; }
+            set
+            {
 
-                    SetProperty(ref _kriteriaid, value);
-                     }
-          } 
+                SetProperty(ref _pemohonid, value);
+            }
+        }
 
-          private int  _id;
-           private double  _nilai;
-           private int  _pemohonid;
-           private int  _kriteriaid;
-      }
+        [DbColumn("KriteriaId")]
+        public int KriteriaId
+        {
+            get { return _kriteriaid; }
+            set
+            {
+
+                SetProperty(ref _kriteriaid, value);
+            }
+        }
+
+        private int _id;
+        private double _nilai;
+        private int _pemohonid;
+        private int _kriteriaid;
+        private string _value;
+    }
 }
 
 
