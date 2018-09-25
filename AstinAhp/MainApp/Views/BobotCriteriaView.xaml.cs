@@ -36,15 +36,17 @@ namespace MainApp.Views
             }
 
             main.Children.Add(headers);
+            int i = 0;
             foreach (var item in Criterias)
             {
+                int j = 0;
                 var rows = new WrapPanel();
                 rows.Children.Add(new TextBox { Width= width, Text= item.Nama });
                 foreach (var item1 in Criterias)
                 {
 
                     var dbData = KriteriaData.Where(O => O.KriteriaId == item.Id && O.PasanganId == item1.Id).FirstOrDefault();
-                    var data = new BobotItem() { RowId=item.Id, Width = width, Row = item.Id, Column = item1.Id };
+                    var data = new BobotItem() { RowId=item.Id, ColumnId=item1.Id, Width = width, Row = i, Column = j};
                     if (dbData!=null)
                     {
                         data.Nilai = dbData.Nilai;
@@ -65,10 +67,12 @@ namespace MainApp.Views
                    
 
                     rows.Children.Add(data);
+                    j++;
                 }
                 main.Children.Add(rows);
+                i++;
             }
-
+         
            
            
         }
@@ -89,10 +93,10 @@ namespace MainApp.Views
                     Project.AddSubCriteria(k);
                     foreach (WrapPanel wrp in main.Children)
                     {
-                        var results = wrp.Children.OfType<BobotItem>().Where(O => O.Row == item.Id);
+                        var results = wrp.Children.OfType<BobotItem>().Where(O => O.RowId == item.Id);
                         foreach (var ctrl in results)
                         {
-                            var bobot = new MBobot() { Row = ctrl.Row - 1, Column = ctrl.Column - 1, BobotType = BobotType.Criteria, ParentId = ctrl.Row, Value = ctrl.Nilai };
+                            var bobot = new MBobot() { Row = ctrl.Row, Column = ctrl.Column, BobotType = BobotType.Criteria,  RowId=ctrl.RowId, ColumnId=ctrl.ColumnId, ParentId = 0, Value = ctrl.Nilai };
                             bobots.Add(bobot);
 
                         }
@@ -102,11 +106,11 @@ namespace MainApp.Views
 
                 foreach(var item in bobots)
                 {
-                    var data = KriteriaData.Where(O => O.KriteriaId == item.Row + 1 && O.PasanganId == item.Column + 1).FirstOrDefault();
+                    var data = KriteriaData.Where(O => O.KriteriaId == item.RowId && O.PasanganId == item.ColumnId).FirstOrDefault();
                     if (data != null)
                         data.Nilai = item.Value;
                     else
-                        KriteriaData.Add(new Models.DTO.ahpkriteria { KriteriaId = item.Row + 1, PasanganId = item.Column + 1, Nilai = item.Value });
+                        KriteriaData.Add(new Models.DTO.ahpkriteria { KriteriaId = item.RowId, PasanganId = item.ColumnId, Nilai = item.Value });
                 }
 
                 if ( KriteriaData.Update(new Models.DTO.ahpkriteria()))

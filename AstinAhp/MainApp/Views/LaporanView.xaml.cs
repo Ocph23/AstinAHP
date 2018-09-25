@@ -34,44 +34,10 @@ namespace MainApp.Views
 
         private void LaporanView_Loaded(object sender, RoutedEventArgs e)
         {
-          
-            foreach(var item in MainPoject.SubCriteria)
+            for (int x = DateTime.Now.Year; x > DateTime.Now.Year - 5; x--)
             {
-                item.Calculate(item.Value);
+                tahun.Items.Add(x);
             }
-
-            List<ReportModel> list = new List<ReportModel>();
-            PemohonCollection collection = new PemohonCollection();
-           
-            foreach(var item in collection)
-            {
-                var model = new ReportModel { ID=item.Id, Nama=item.Nama };
-                DataPemohonCollecion dataPemohon = new DataPemohonCollecion(item);
-              foreach(var criteria in MainPoject.SubCriteria)
-                {
-                    var pemohonValue = dataPemohon.Where(O => O.KriteriaId == criteria.Id).FirstOrDefault().Value;
-                    var nilai = criteria.SubCriteria.Where(O => O.Name == pemohonValue).FirstOrDefault().Value;
-                    model.Nilai += nilai;
-                }
-                list.Add(model);
-
-            }
-
-            rv.ProcessingMode = ProcessingMode.Local;
-            
-
-            LocalReport localReport = rv.LocalReport;
-            rv.SetDisplayMode(DisplayMode.PrintLayout);
-            localReport.ReportPath = "Laporan.rdlc";
-
-            ReportDataSource dsSalesOrder = new ReportDataSource();
-            dsSalesOrder.Name = "DataSet1";
-            dsSalesOrder.Value = GetRank(list.OrderByDescending(O=>O.Nilai).ToList());
-
-            localReport.DataSources.Add(dsSalesOrder);
-
-           
-            rv.RefreshReport();
 
         }
 
@@ -85,6 +51,55 @@ namespace MainApp.Views
             }
 
             return list;
+        }
+
+        private void tahun_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            rv.LocalReport.DataSources.Clear();
+            int selectedTahun =(Int32) (sender as ComboBox).SelectedItem;
+            foreach (var item in MainPoject.SubCriteria)
+            {
+                item.Calculate(item.Value);
+            }
+
+            List<ReportModel> list = new List<ReportModel>();
+            PemohonCollection collection = new PemohonCollection();
+
+            foreach (var item in collection)
+            {
+                var model = new ReportModel { ID = item.Id, Nama = item.Nama };
+                DataPemohonCollecion dataPemohon = new DataPemohonCollecion(item);
+                foreach (var criteria in MainPoject.SubCriteria)
+                {
+                    var pemohonValue = dataPemohon.Where(O => O.KriteriaId == criteria.Id && O.Tahun==selectedTahun).FirstOrDefault();
+                    if (pemohonValue != null && !string.IsNullOrEmpty(pemohonValue.Value))
+                    {
+                        var nilai = criteria.SubCriteria.Where(O => O.Name == pemohonValue.Value).FirstOrDefault().Value;
+                        model.Nilai += nilai;
+                    }
+
+                }
+
+                if(model.Nilai>0)
+                list.Add(model);
+
+            }
+
+            rv.ProcessingMode = ProcessingMode.Local;
+
+
+            LocalReport localReport = rv.LocalReport;
+            rv.SetDisplayMode(DisplayMode.PrintLayout);
+            localReport.ReportPath = "Laporan.rdlc";
+
+            ReportDataSource dsSalesOrder = new ReportDataSource();
+            dsSalesOrder.Name = "DataSet1";
+            dsSalesOrder.Value = GetRank(list.OrderByDescending(O => O.Nilai).ToList());
+
+            localReport.DataSources.Add(dsSalesOrder);
+            localReport.SetParameters(new ReportParameter("Tahun", selectedTahun.ToString(), true));
+
+            rv.RefreshReport();
         }
     }
 

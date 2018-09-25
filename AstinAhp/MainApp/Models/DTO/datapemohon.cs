@@ -66,11 +66,23 @@ using Ocph.DAL;
             }
         }
 
+        [DbColumn("Tahun")]
+        public int Tahun
+        {
+            get { return _tahun; }
+            set
+            {
+
+                SetProperty(ref _tahun, value);
+            }
+        }
+
         private int _id;
         private double _nilai;
         private int _pemohonid;
         private int _kriteriaid;
         private string _value;
+        private int _tahun;
     }
 }
 

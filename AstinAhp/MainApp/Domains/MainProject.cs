@@ -31,9 +31,17 @@ namespace MainApp.Domains
             }
 
             var listBobotCriteria = new List<MBobot>();
-            foreach (var item in DataCriteria)
+            int i = 0;
+            foreach (var item in SubCriteria)
             {
-                listBobotCriteria.Add(new MBobot { Value = item.Nilai, BobotType = BobotType.Criteria, Row = item.KriteriaId - 1, Column = item.PasanganId - 1 });
+                int j = 0;
+                foreach(var sub in DataCriteria.Where(O=>O.KriteriaId==item.Id))
+                {
+                    listBobotCriteria.Add(new MBobot { Row=i, Column=j, Value = sub.Nilai, BobotType = BobotType.Criteria, RowId = sub.KriteriaId - 1, ColumnId = sub.PasanganId - 1 });
+                    j++;
+                }
+                i++;
+             
             }
 
             this.SetBobot(listBobotCriteria);

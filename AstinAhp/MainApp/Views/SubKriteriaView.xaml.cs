@@ -154,6 +154,7 @@ namespace MainApp.Views
                 else
                 {
                     Source.SelectedItem.SubKriterias.Add(Model);
+                    Source_OnSelected(Source.SelectedItem);
                     IsSaved = true;
 
                 }
