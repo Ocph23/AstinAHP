@@ -22,6 +22,16 @@
             <MenuItem Header="Laporan" Name="report" Click="report_Click"/>
             <MenuItem Name="keluar" Click="keluar_Click" Header="Keluar" />
         </Menu>
-
+        <StackPanel VerticalAlignment="Bottom" HorizontalAlignment="Center">
+            <StackPanel Width="140" Height="150" HorizontalAlignment="Center">
+                <StackPanel.Background>
+                    <ImageBrush ImageSource="logo kota.png"/>
+                </StackPanel.Background>
+            </StackPanel>
+            <Label HorizontalAlignment="Center" Content="DINAS PERINDUSTRIAN DAN PERDAGANGAN" Foreground="#FFB7D673" FontWeight="Bold" FontSize="20"/>
+            <Label HorizontalAlignment="Center" Content="KOPERASI DAN USAHA KECIL MENGENGAH" Foreground="#FFB7D673" FontWeight="Bold" FontSize="20"/>
+            <Label HorizontalAlignment="Center" Content="KOTA JAYAPURA" Foreground="#FFB7D673" FontWeight="Bold" FontSize="20"/>
+        </StackPanel>
+       
     </Grid>
 </Window>

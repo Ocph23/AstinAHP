@@ -31,7 +31,8 @@ namespace MainApp.Views
             Main = Helper.GetMainViewModel();
             Pemohons = Main.Pemohons;
             Kriterias = Main.Kriterias;
-            SourceView = new List<ArrayList>();
+            Source = new List<ArrayList>();
+            SourceView = (CollectionView)CollectionViewSource.GetDefaultView(Source);
             for (int x = DateTime.Now.Year; x > DateTime.Now.Year - 5; x--)
             {
                 tahun.Items.Add(x);
@@ -42,13 +43,14 @@ namespace MainApp.Views
         public MainWindowViewModel Main { get; }
         public PemohonCollection Pemohons { get; }
         public KriteriaCollection Kriterias { get; }
-        public List<ArrayList> SourceView { get; private set; }
+        public List<ArrayList> Source { get; private set; }
+        public CollectionView SourceView { get; }
         public int SelectedTahun { get; set; }
 
         private void PemohonDataView_Loaded(object sender, RoutedEventArgs e)
         {
            
-            SourceView.Clear();
+            Source.Clear();
        
 
 
@@ -62,11 +64,11 @@ namespace MainApp.Views
                 for (var i = 0; i < Pemohons.Count; i++)
                 {
                     var p = Pemohons.ToList()[i];
-                    var pValue = SourceView[i];
+                    var pValue = Source[i];
                     int j = 1;
                     foreach (var k in Kriterias)
                     {
-                        var data = p.Datas.Where(O => O.PemohonId == p.Id && O.KriteriaId == k.Id).FirstOrDefault();
+                        var data = p.Datas.Where(O => O.PemohonId == p.Id && O.KriteriaId == k.Id && O.Tahun==SelectedTahun).FirstOrDefault();
                         if (data != null)
                             data.Value = pValue[j].ToString();
                         else
@@ -100,7 +102,7 @@ namespace MainApp.Views
         {
             main.Columns.Clear();
             SelectedTahun =(Int32)(sender as ComboBox).SelectedItem;
-            SourceView.Clear();
+            Source.Clear();
             var col = new DataGridTextColumn();
             col.Header = "Nama";
             col.Binding = new Binding(string.Format("[{0}]", 0));
@@ -133,9 +135,10 @@ namespace MainApp.Views
                     else
                         list.Add("");
                 }
-                SourceView.Add(list);
+                Source.Add(list);
             }
-            main.ItemsSource = SourceView;
+            main.ItemsSource = Source;
+            SourceView.Refresh();
         }
     }
     public class PemohonDataViewModel:BaseNotify

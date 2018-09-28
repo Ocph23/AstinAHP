@@ -74,8 +74,9 @@ namespace MainApp.Views
                     var pemohonValue = dataPemohon.Where(O => O.KriteriaId == criteria.Id && O.Tahun==selectedTahun).FirstOrDefault();
                     if (pemohonValue != null && !string.IsNullOrEmpty(pemohonValue.Value))
                     {
-                        var nilai = criteria.SubCriteria.Where(O => O.Name == pemohonValue.Value).FirstOrDefault().Value;
-                        model.Nilai += nilai;
+                        var nilai = criteria.SubCriteria.Where(O => O.Name == pemohonValue.Value).FirstOrDefault();
+                        if(nilai!=null)
+                        model.Nilai += nilai.Value;
                     }
 
                 }

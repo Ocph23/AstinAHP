@@ -63,8 +63,7 @@ namespace MainApp.Views
         {
             try
             {
-                User = "Ocph23";
-                Password = "Sony@77";
+             
                 using (var db = new OcphDbContext())
                 {
                     var result = db.Users.Where(O => O.UserName == User).FirstOrDefault();

@@ -103,61 +103,64 @@ namespace MainApp.Views
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            try
+            if(Kriterias!=null && Kriterias.SelectedItem!=null)
             {
-                normalisasi.Children.Clear();
-                tblConsistency.Children.Clear();
-                matrix.Children.Clear();
-
-                var criteriaSelected = Kriterias.SelectedItem;
-                Project = new MCriteria(criteriaSelected.Id, criteriaSelected.Kode, criteriaSelected.Nama);
-           
-                var bobots = new List<MBobot>();
-                foreach (var item in criteriaSelected.SubKriterias)
+                try
                 {
-                    var k = new MCriteria(item.Id, item.Kode, item.Nama);
-                    Project.AddSubCriteria(k);
-                    foreach (WrapPanel wrp in main.Children)
-                    {
-                        var results = wrp.Children.OfType<BobotItem>().Where(O => O.RowId == item.Id);
-                        foreach (var ctrl in results)
-                        {
-                            var bobot = new MBobot() { RowId=ctrl.RowId,ColumnId=ctrl.ColumnId, Row = ctrl.Row, Column = ctrl.Column, BobotType = BobotType.Criteria, ParentId = ctrl.Row, Value = ctrl.Nilai };
-                            bobots.Add(bobot);
+                    normalisasi.Children.Clear();
+                    tblConsistency.Children.Clear();
+                    matrix.Children.Clear();
 
+                    var criteriaSelected = Kriterias.SelectedItem;
+                    Project = new MCriteria(criteriaSelected.Id, criteriaSelected.Kode, criteriaSelected.Nama);
+
+                    var bobots = new List<MBobot>();
+                    foreach (var item in criteriaSelected.SubKriterias)
+                    {
+                        var k = new MCriteria(item.Id, item.Kode, item.Nama);
+                        Project.AddSubCriteria(k);
+                        foreach (WrapPanel wrp in main.Children)
+                        {
+                            var results = wrp.Children.OfType<BobotItem>().Where(O => O.RowId == item.Id);
+                            foreach (var ctrl in results)
+                            {
+                                var bobot = new MBobot() { RowId = ctrl.RowId, ColumnId = ctrl.ColumnId, Row = ctrl.Row, Column = ctrl.Column, BobotType = BobotType.Criteria, ParentId = ctrl.Row, Value = ctrl.Nilai };
+                                bobots.Add(bobot);
+
+                            }
                         }
                     }
+
+
+                    foreach (var item in bobots)
+                    {
+                        var data = Datas.Where(O => O.SubKriteriaId == item.RowId && O.PasanganId == item.ColumnId).FirstOrDefault();
+                        if (data != null)
+                            data.Nilai = item.Value;
+                        else
+                            Datas.Add(new Models.DTO.ahpsub { SubKriteriaId = item.RowId, PasanganId = item.ColumnId, Nilai = item.Value });
+                    }
+
+                    if (Datas.Update(new Models.DTO.ahpsub()))
+                    {
+                        Project.SetBobot(bobots);
+                    }
                 }
-
-
-                foreach (var item in bobots)
+                catch (Exception ex)
                 {
-                    var data = Datas.Where(O => O.SubKriteriaId == item.RowId && O.PasanganId == item.ColumnId).FirstOrDefault();
-                    if (data != null)
-                        data.Nilai = item.Value;
-                    else
-                        Datas.Add(new Models.DTO.ahpsub { SubKriteriaId = item.RowId,  PasanganId = item.ColumnId, Nilai = item.Value });
+
+                    Helper.Error(ex.Message);
                 }
 
-                if (Datas.Update(new Models.DTO.ahpsub()))
-                {
-                    Project.SetBobot(bobots);
-                }
+
+                Project.Calculate(SelectedProject.Value);
+
+                SetTableNormalisasi(Project);
+                SetTableKonsistency(Project);
+                SetTableKonsistencyMatrix(Project);
+                ci.Text = Project.ConsistencyIndex.ToString();
+                cr.Text = Project.ConsistencyRatio.ToString();
             }
-            catch (Exception ex)
-            {
-
-                Helper.Error(ex.Message);
-            }
-
-   
-            Project.Calculate(SelectedProject.Value);
-
-            SetTableNormalisasi(Project);
-            SetTableKonsistency(Project);
-            SetTableKonsistencyMatrix(Project);
-            ci.Text = Project.ConsistencyIndex.ToString();
-            cr.Text = Project.ConsistencyRatio.ToString();
 
 
 
